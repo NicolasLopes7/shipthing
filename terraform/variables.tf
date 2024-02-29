@@ -2,18 +2,16 @@ variable "region" {
   default = "us-east-1"
 }
 
-variable "aws_access_key_id" {
-  sensitive = true
+variable "tfstate_bucket_name" {
+ 
 }
 
-variable "aws_secret_access_key" {
-  sensitive = true
+variable "tfstate_bucket_key_name" {
+ 
 }
 
 provider "aws" {
   region     = var.region
-  access_key = var.aws_access_key_id
-  secret_key = var.aws_secret_access_key
 }
 
 
