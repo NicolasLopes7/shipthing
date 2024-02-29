@@ -1,8 +1,9 @@
 name: "Deploy terraform"
 on:
   push:
-    paths:
-      - 'terraform**'
+    branches:
+      - main
+  pull_request:
 permissions:
       id-token: write # This is required for aws oidc connection
       contents: read # This is required for actions/checkout
@@ -10,6 +11,11 @@ permissions:
 env:
   TF_LOG: INFO
   AWS_REGION: ${{ secrets.AWS_REGION }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
