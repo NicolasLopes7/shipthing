@@ -1,7 +1,7 @@
 package main
 
 import (
-	deploy "github.com/NicolasLopes7/shipthing-uploader/lib/deploy"
+	deploy "github.com/NicolasLopes7/shipthing/lib/deploy"
 	"github.com/gin-gonic/gin"
 )
 

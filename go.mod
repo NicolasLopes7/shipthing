@@ -1,4 +1,4 @@
-module github.com/NicolasLopes7/shipthing-uploader
+module github.com/NicolasLopes7/shipthing
 
 go 1.20
 

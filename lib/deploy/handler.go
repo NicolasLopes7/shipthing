@@ -7,8 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
-	fs "github.com/NicolasLopes7/shipthing-uploader/lib/fs"
-	github "github.com/NicolasLopes7/shipthing-uploader/lib/github"
+	fs "github.com/NicolasLopes7/shipthing/lib/fs"
+	github "github.com/NicolasLopes7/shipthing/lib/github"
 )
 
 func Handler(ctx *gin.Context) {
