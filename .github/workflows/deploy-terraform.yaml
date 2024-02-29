@@ -1,9 +1,8 @@
 name: "Deploy terraform"
 on:
   push:
-    branches:
-      - **
-  pull_request:
+    paths:
+      - 'terraform**'
 permissions:
       id-token: write # This is required for aws oidc connection
       contents: read # This is required for actions/checkout
