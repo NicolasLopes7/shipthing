@@ -1,6 +1,8 @@
 name: "Deploy terraform"
 on:
   push:
+    paths:
+      - 'terraform**'
     branches:
       - main
   pull_request:

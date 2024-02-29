@@ -2,11 +2,11 @@ package deploy
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
+	aws "github.com/NicolasLopes7/shipthing/lib/aws"
 	fs "github.com/NicolasLopes7/shipthing/lib/fs"
 	github "github.com/NicolasLopes7/shipthing/lib/github"
 )
@@ -34,9 +34,16 @@ func Handler(ctx *gin.Context) {
 	}
 
 	err = fs.WalkDir(path, func(path string) error {
-		time.Sleep(5 * time.Second)
+		err := aws.UploadToS3(path)
+
+		if err != nil {
+			return err
+		}
+
 		return nil
 	})
+
+	fs.RemoveLocalRepo(path)
 
 	if err != nil {
 		ctx.JSON(500, gin.H{
