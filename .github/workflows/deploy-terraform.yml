@@ -41,11 +41,13 @@ jobs:
 
       - name: Terraform fmt
         id: fmt
+        working-directory: terraform
         run: terraform fmt -check
         continue-on-error: true
 
       - name: Terraform Init
         id: init
+        working-directory: terraform
         env:
           tfstate_bucket_name: ${{ secrets.AWS_BUCKET_NAME }}
           tfstate_bucket_key_name: ${{ secrets.AWS_BUCKET_KEY_NAME }}
@@ -55,10 +57,12 @@ jobs:
 
       - name: Terraform Validate
         id: validate
+        working-directory: terraform
         run: terraform validate -no-color
 
       - name: Terraform Plan
         id: plan
+        working-directory: terraform
         run: terraform plan -no-color
         if: github.event_name == 'pull_request'
         continue-on-error: true
