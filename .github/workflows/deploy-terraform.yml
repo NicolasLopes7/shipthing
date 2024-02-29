@@ -9,7 +9,7 @@ permissions:
       contents: read # This is required for actions/checkout
       pull-requests: write # This is required for gh bot to comment PR
 env:
-  TF_LOG: TRACE
+  TF_LOG: INFO
   AWS_REGION: ${{ secrets.AWS_REGION }}
 
 concurrency:
@@ -104,8 +104,10 @@ jobs:
 
       - name: Terraform Plan Status
         if: steps.plan.outcome == 'failure'
+        working-directory: terraform
         run: exit 1
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        working-directory: terraform
         run: terraform apply -auto-approve -input=false
