@@ -47,6 +47,7 @@ jobs:
 
       - name: Terraform Init
         id: init
+        working-directory: terraform
         env:
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
           AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
