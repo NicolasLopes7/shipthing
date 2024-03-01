@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/NicolasLopes7/shipthing/config"
+	aws "github.com/NicolasLopes7/shipthing/lib/aws"
 )
 
 func main() {
@@ -25,7 +26,15 @@ func main() {
 		}
 
 		deployId := res.Val()[1]
+		fmt.Println("deploying: ", deployId)
+		err := aws.DownloadS3Folder(deployId)
 
-		fmt.Println("Deploying", deployId)
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
+		fmt.Println("downloaded artifacts from s3: ", deployId)
+
 	}
 }
