@@ -7,11 +7,13 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/joho/godotenv"
+	"github.com/redis/go-redis/v9"
 )
 
 var (
-	AwsSession *session.Session
-	S3Uploader *s3manager.Uploader
+	AwsSession  *session.Session
+	S3Uploader  *s3manager.Uploader
+	RedisClient *redis.Client
 )
 
 func InitConfig() error {
@@ -28,6 +30,7 @@ func InitConfig() error {
 	}
 
 	S3Uploader = createS3Uploader(AwsSession)
+	RedisClient = createRedisClient()
 
 	return nil
 }
@@ -46,4 +49,14 @@ func createAwsSession() (*session.Session, error) {
 
 func createS3Uploader(session *session.Session) *s3manager.Uploader {
 	return s3manager.NewUploader(session)
+}
+
+func createRedisClient() *redis.Client {
+	redisClient := redis.NewClient(&redis.Options{
+		Addr:     os.Getenv("REDIS_ADDR"),
+		Password: os.Getenv("REDIS_PASSWORD"),
+		DB:       0,
+	})
+
+	return redisClient
 }

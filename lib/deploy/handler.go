@@ -1,11 +1,13 @@
 package deploy
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
+	"github.com/NicolasLopes7/shipthing/config"
 	aws "github.com/NicolasLopes7/shipthing/lib/aws"
 	fs "github.com/NicolasLopes7/shipthing/lib/fs"
 	github "github.com/NicolasLopes7/shipthing/lib/github"
@@ -44,6 +46,25 @@ func Handler(ctx *gin.Context) {
 	})
 
 	fs.RemoveLocalRepo(path)
+
+	redisCtx := context.Background()
+
+	cmd := config.RedisClient.LPush(redisCtx, "builds", deployId.String())
+	if cmd.Err() != nil {
+		ctx.JSON(500, gin.H{
+			"error": cmd.Err().Error(),
+		})
+		return
+	}
+
+	cmd = config.RedisClient.HSet(redisCtx, "status", deployId.String(), "uploaded")
+
+	if cmd.Err() != nil {
+		ctx.JSON(500, gin.H{
+			"error": cmd.Err().Error(),
+		})
+		return
+	}
 
 	if err != nil {
 		ctx.JSON(500, gin.H{
