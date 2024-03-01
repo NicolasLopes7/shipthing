@@ -1,11 +1,18 @@
 package main
 
 import (
-	deploy "github.com/NicolasLopes7/shipthing/lib/deploy"
+	config "github.com/NicolasLopes7/shipthing/config"
+	"github.com/NicolasLopes7/shipthing/uploader-service/deploy"
 	"github.com/gin-gonic/gin"
 )
 
-func InitHTTPServer() {
+func main() {
+	err := config.InitConfig()
+
+	if err != nil {
+		panic(err)
+	}
+
 	r := gin.Default()
 
 	r.GET("/health", func(c *gin.Context) {

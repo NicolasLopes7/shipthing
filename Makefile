@@ -1,4 +1,4 @@
 .PHONY: dev
 
 dev:
-	@find . -name "*.go" | entr -r sh -c 'echo "Restarted" && go run .'
+	@find ./$(service) -name "*.go" | entr -r sh -c 'echo "Restarted" && go run ./$(service)'
