@@ -1,16 +1,16 @@
 .PHONY: dev
 
-dev:
-	@find ./$(service) ./lib ./config -name "*.go" | entr -r sh -c 'echo "Restarted" && go run ./$(service)'
-
-dev-beta:
-	@make -j 2 deployer uploader compose
+compose:
+	@docker-compose up -d || docker compose up -d
 
 deployer:
-	@bash ./infra/deployer-service.sh
+	@make watch ; go run ./deployer-service
 
 uploader:
-	@bash ./infra/uploader-service.sh
+	@make watch ; go run ./uploader-service
 
-compose:
-	@docker-compose -f infra/docker-compose.yaml up -d || docker compose -f infra/docker-compose.yaml up -d
+watch:
+	@find . -name "*.go" | entr -r sh -c 'echo "Restarted"'
+
+dev:
+	@make compose ; make deployer ; make uploader
