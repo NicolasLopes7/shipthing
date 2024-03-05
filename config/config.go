@@ -40,7 +40,9 @@ func InitConfig() error {
 
 func createAwsSession() (*session.Session, error) {
 	sesh, err := session.NewSession(&aws.Config{
-		Region: aws.String(os.Getenv("AWS_REGION")),
+		Region:           aws.String(os.Getenv("AWS_REGION")),
+		Endpoint:         aws.String(os.Getenv("AWS_ENDPOINT")),
+		S3ForcePathStyle: aws.Bool(true),
 	})
 
 	if err != nil {
